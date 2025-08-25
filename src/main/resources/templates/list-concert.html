@@ -4,12 +4,36 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Concert List</title>
-</head>
-<body>
-    <h1>Concert List</h1>
-    <a href="/add-concert/">Add Concert</a>
-    <!-- TODO: show delete link for each concert -->
+ <a href="/add-concert">Add Concert</a> | 
+    <a href="/delete-concert" onclick="return confirm('Are you sure you want to delete all concerts?');">Delete All Concerts</a>
 
-    <!-- TODO: Add list of concerts -->
+    <table border="1" cellpadding="5" cellspacing="0" style="margin-top: 20px;">
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Performer</th>
+                <th>Date</th>
+                <th>Description</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Loop through concerts -->
+            <tr th:each="concert : ${concerts}">
+                <td th:text="${concert.title}">Concert Title</td>
+                <td th:text="${concert.performer}">Performer</td>
+                <td th:text="${#dates.format(concert.date, 'yyyy-MM-dd')}">Date</td>
+                <td th:text="${concert.description}">Description</td>
+                <td>
+                    <a th:href="@{'/delete-concert/' + ${concert.id}}" onclick="return confirm('Delete this concert?');">Delete</a>
+                </td>
+            </tr>
+            <!-- Show a message if list is empty -->
+            <tr th:if="${#lists.isEmpty(concerts)}">
+                <td colspan="5" style="text-align: center;">No concerts available.</td>
+            </tr>
+        </tbody>
+    </table>
+
 </body>
 </html>
